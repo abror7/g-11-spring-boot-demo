@@ -14,6 +14,6 @@ public interface CarRepo extends JpaRepository<Car, Integer> {
 
     Page<Car> findAllByModel(Pageable pageable, String model);
 
-    Page<Car> findAllByModelLikeIgnoreCase(Pageable pageable, String model);
+    Page<Car> findByModelLikeIgnoreCase(Pageable pageable, String model);
 
 }

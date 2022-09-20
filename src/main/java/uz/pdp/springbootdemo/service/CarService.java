@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import uz.pdp.dto.CarDto;
+import uz.pdp.springbootdemo.dto.CarDto;
 import uz.pdp.springbootdemo.entity.Brand;
 import uz.pdp.springbootdemo.entity.Car;
 import uz.pdp.springbootdemo.repository.BrandRepo;
@@ -26,7 +26,7 @@ public class CarService {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Car> carsPage;
         if (search != null)
-            carsPage = carRepo.findAllByModelLikeIgnoreCase(pageable, search);
+            carsPage = carRepo.findByModelLikeIgnoreCase(pageable, search);
 //            carsPage = carRepo.findAllByModel(pageable, search);
         else
             carsPage = carRepo.findAll(pageable);
@@ -36,12 +36,11 @@ public class CarService {
         return carList;
     }
 
-    @SneakyThrows
+
     public void saveCar(CarDto carDto) {
         Optional<Brand> optionalBrand = brandRepo.findById(carDto.getBrandId());
         if (optionalBrand.isEmpty()) {
-            // TODO: 17/09/22 replace with custom exception
-            throw new IllegalStateException("Idsi : " + carDto.getBrandId() + " bo'lgan brand topilmadi");
+            throw new IllegalStateException("Brand not found!!!");
         }
         carRepo.save(Car.builder()
                 .model(carDto.getModel())

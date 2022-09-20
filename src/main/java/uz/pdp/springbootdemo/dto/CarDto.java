@@ -1,4 +1,4 @@
-package uz.pdp.dto;
+package uz.pdp.springbootdemo.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -16,13 +16,13 @@ public class CarDto {
 
     private Integer id;
 
-    @NotNull(message = "Brand tanlanishi shart!!!")
+    @NotNull(message = "Brand tanlash shart!!!")
     private Integer brandId; // req
 
     private String brandName; // res
 
-    @NotEmpty(message = "Bo'sh bo'lmasin")
-    @NotBlank(message = "Probel ham mumkin emas...")
+//    @NotEmpty(message = "Model nomi kiritilishi shart!!!")
+    @NotBlank(message = "Model nomi kiritilishi shart!!! Hattoki probel ham mumkin emas!!!")
     private String model;
 
     private String description;
