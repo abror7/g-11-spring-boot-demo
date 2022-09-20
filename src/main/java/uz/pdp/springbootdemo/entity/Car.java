@@ -20,9 +20,9 @@ public class Car {
     private Integer id;
 
     @ManyToOne
-    @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun
     private Brand brand;
 
+//    @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun
 //    private String brand;
 
     @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun

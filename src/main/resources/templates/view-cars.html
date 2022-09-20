@@ -5,12 +5,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Cars page</title>
+    <!--   STYLESHEETS  -->
+    <link rel="stylesheet" href="webjars/bootstrap/5.2.0/css/bootstrap.min.css">
 </head>
 <body>
 
-<ul th:each="car:${mashinalar}">
-    <li th:text="${car.title}"></li>
-</ul>
+<div class="container">
+
+    <a href="/cars/get-form" class="my-4 btn btn-primary">+ add new car</a>
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Car model</th>
+                    <th scope="col">Brand name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody th:each="car:${cars}">
+                <tr>
+                    <td th:text="${car.model}"></td>
+                    <td th:text="${car.brand.name}"></td>
+                    <td>
+                        <a
+                                th:href="@{'/cars/get-form/'+${car.id}}"
+                                th:text="EDIT"
+                                class="btn btn-warning"></a>
+                        <a
+                                th:href="@{'/cars/delete/'+${car.id}}"
+                                th:text="DELETE"
+                                class="btn btn-danger"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
