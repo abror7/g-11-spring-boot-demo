@@ -15,6 +15,9 @@
     <div class="row">
         <div class="col-md-6 offset-3">
             <form action="/users" method="post" th:object="${userDto}">
+
+                <h1 class="text-danger" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"></h1>
+
                 <div class="mb-3">
                     <label for="fullName" class="form-label">Fullname:</label>
                     <input name="fullName" type="text" class="form-control" id="fullName">

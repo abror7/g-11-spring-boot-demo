@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping
     public String saveUser(@Valid UserDto userDto,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "user-form";
+            return "register-form";
         }
         userservice.saveUser(userDto);
         return "redirect:/users";
