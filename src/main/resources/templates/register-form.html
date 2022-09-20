@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Register form</title>
+    <!--   STYLESHEETS  -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <form action="/users" method="post" th:object="${userDto}">
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Fullname:</label>
+                    <input name="fullName" type="text" class="form-control" id="fullName">
+                    <p class="text-danger" th:if="${#fields.hasErrors()}" th:errors="*{fullName}"></p>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input name="username" type="text" class="form-control" id="username">
+                    <p class="text-danger" th:if="${#fields.hasErrors()}" th:errors="*{username}"></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userPassword" class="form-label">Password:</label>
+                    <input name="password" type="password" class="form-control" id="userPassword">
+                    <p th:if="${#fields.hasErrors()}" th:errors="*{password}"></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userConfirmPassword" class="form-label">Confirm Password:</label>
+                    <input name="confirmPassword" type="password" class="form-control" id="userConfirmPassword">
+                    <p th:if="${#fields.hasErrors()}" th:errors="*{confirmPassword}"></p>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
