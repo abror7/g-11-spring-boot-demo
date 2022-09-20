@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Users page</title>
+    <!--   STYLESHEETS  -->
+    <link rel="stylesheet" href="webjars/bootstrap/5.2.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <a href="/users/get-form" class="my-4 btn btn-primary">+ add new user</a>
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody th:each="user:${users}">
+                <tr>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.fullName}"></td>
+                    <td>
+                        <a
+                                th:href="@{'/users/get-form/'+${user.id}}"
+                                th:text="EDIT"
+                                class="btn btn-warning"></a>
+                        <a
+                                th:href="@{'/users/delete/'+${user.id}}"
+                                th:text="DELETE"
+                                class="btn btn-danger"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
