@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
 
@@ -28,6 +29,9 @@ public class User {
 
     @Column(unique = true)
     private String email;
+
+//    @OneToOne
+//    private Address address;
 
 
 

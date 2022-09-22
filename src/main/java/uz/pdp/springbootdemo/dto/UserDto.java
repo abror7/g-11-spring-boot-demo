@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import uz.pdp.springbootdemo.validation.AgeValid;
 import uz.pdp.springbootdemo.validation.PasswordsMatch;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -34,6 +37,8 @@ public class UserDto {
 //    @Email //optional
     private String email;
 
-    // TODO: 20/09/22 validate user's age
-//    private LocalDate birthDate; use formatter
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "You should enter your birthdate")
+    @AgeValid
+    private LocalDate birthDate;
 }
