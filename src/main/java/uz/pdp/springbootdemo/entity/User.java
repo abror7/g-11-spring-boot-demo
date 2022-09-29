@@ -1,8 +1,12 @@
 package uz.pdp.springbootdemo.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,12 +34,17 @@ public class User {
     @Column(unique = true)
     private String email;
 
+
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
     @JsonIgnore
     private Passport passport;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Address> addressList;
+
+//    @OneToOne
+//    private Address address;
+
 
 
     @Override

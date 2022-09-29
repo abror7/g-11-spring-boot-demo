@@ -9,13 +9,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.springbootdemo.dto.CarByIdDto;
 import uz.pdp.springbootdemo.dto.CarDto;
+import uz.pdp.springbootdemo.entity.Brand;
 import uz.pdp.springbootdemo.entity.Car;
 import uz.pdp.springbootdemo.projection.CarByIdProjection;
+import uz.pdp.springbootdemo.repository.BrandRepo;
+import uz.pdp.springbootdemo.repository.CarRepo;
 import uz.pdp.springbootdemo.service.CarService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cars")
@@ -23,6 +27,8 @@ import java.util.List;
 public class CarController {
 
     private final CarService carService;
+    private final CarRepo carRepo;
+    private final BrandRepo brandRepo;
 
 
     // @ModelAttribute
@@ -47,13 +53,31 @@ public class CarController {
     }
 
     @GetMapping("/get-form")
-    public String getCarForm(@ModelAttribute(name = "carDto") CarDto carDto) {
+    public String getCarForm(Model model,
+                             @RequestParam(required = false) Integer id) {
+
+        CarDto carDto = new CarDto();
+        List<Brand> brandList = brandRepo.findAll();
+
+        if (id != null) {
+            Optional<Car> optionalCar = carRepo.findById(id);
+            if (optionalCar.isPresent()) {
+                Car car = optionalCar.get();
+                carDto.setId(car.getId());
+                carDto.setModel(car.getModel());
+                carDto.setDescription(car.getDescription());
+                carDto.setBrandId(car.getBrand().getId());
+            }
+        }
+
+        model.addAttribute("carDto", carDto);
+        model.addAttribute("brandList", brandList);
         return "car-form";
     }
 
 
     @PostMapping
-    public String saveCar(@Valid CarDto carDto,  BindingResult bindingResult) {
+    public String saveCar(@Valid CarDto carDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "car-form";
         }
