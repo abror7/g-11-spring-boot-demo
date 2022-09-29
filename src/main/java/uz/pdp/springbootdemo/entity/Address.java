@@ -11,27 +11,20 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "cars")
+@Entity(name = "addresses")
 @Builder
-public class Car {
+public class Address {
 
     @Id // primary key bo'lishi uchun
     @GeneratedValue(strategy = GenerationType.IDENTITY) // sequence yaratib berishi uchun
     private Integer id;
 
+    private String addressLine;
+
     @ManyToOne
-    private Brand brand;
+    private User user;
 
-//    @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun
-//    private String brand;
 
-    @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun
-    private String model;
-
-    @Column(columnDefinition = "text")
-    private String description;
-
-    //....
     //....
     //....
     //....

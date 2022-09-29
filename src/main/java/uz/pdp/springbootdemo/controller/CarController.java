@@ -1,12 +1,16 @@
 package uz.pdp.springbootdemo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.springbootdemo.dto.CarByIdDto;
 import uz.pdp.springbootdemo.dto.CarDto;
 import uz.pdp.springbootdemo.entity.Car;
+import uz.pdp.springbootdemo.projection.CarByIdProjection;
 import uz.pdp.springbootdemo.service.CarService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +37,13 @@ public class CarController {
         List<Car> allCarsFromDb = carService.getAllCarsFromDb(page, size, search);
         model.addAttribute("cars", allCarsFromDb);
         return "view-cars";
+    }
+
+
+    @GetMapping("/{id}")
+    public HttpEntity<?> getCarById(@PathVariable Integer id){
+        CarByIdProjection carById = carService.getCarById(id);
+        return ResponseEntity.ok(carById);
     }
 
     @GetMapping("/get-form")
