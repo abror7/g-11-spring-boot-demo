@@ -1,6 +1,5 @@
 package uz.pdp.springbootdemo.entity;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,35 +7,27 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Entity(name = "passports")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity(name = "cars")
 @Builder
-public class Car {
-
+public class Passport {
     @Id // primary key bo'lishi uchun
     @GeneratedValue(strategy = GenerationType.IDENTITY) // sequence yaratib berishi uchun
     private Integer id;
 
-    @ManyToOne
-    private Brand brand;
+    private String serial;
 
-//    @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun
-//    private String brand;
+    private String number;
 
-    @Column(nullable = false) // null qiymatlarni qabul qilmasligi uchun
-    private String model;
-
-    @Column(columnDefinition = "text")
-    private String description;
+    @OneToOne
+    private User owner;
 
     //....
     //....
     //....
     //....
-    //....
-    //....
-
 
 }
+

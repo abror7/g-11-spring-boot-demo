@@ -1,6 +1,8 @@
 package uz.pdp.springbootdemo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,12 +14,19 @@ import uz.pdp.springbootdemo.service.UserService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
-@RequestMapping("/users")
+@RestController
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userservice;
+
+
+    @GetMapping("/{id}")
+    public HttpEntity<?> getUserById(@PathVariable Integer id){
+        User userById = userservice.getUserById(id);
+        return ResponseEntity.ok(userById);
+    }
 
 
     // @ModelAttribute

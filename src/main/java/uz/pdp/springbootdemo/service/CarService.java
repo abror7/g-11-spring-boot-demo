@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import uz.pdp.springbootdemo.dto.CarByIdDto;
 import uz.pdp.springbootdemo.dto.CarDto;
 import uz.pdp.springbootdemo.entity.Brand;
 import uz.pdp.springbootdemo.entity.Car;
+import uz.pdp.springbootdemo.projection.CarByIdProjection;
 import uz.pdp.springbootdemo.repository.BrandRepo;
 import uz.pdp.springbootdemo.repository.CarRepo;
 
@@ -34,6 +36,32 @@ public class CarService {
         long totalElements = carsPage.getTotalElements();
         List<Car> carList = carsPage.getContent();
         return carList;
+    }
+
+
+//    public CarByIdDto getCarById(Integer id) {
+//        Optional<Car> optionalCar = carRepo.findById(id);
+//        if (optionalCar.isEmpty()) {
+//            throw new IllegalStateException("Car not found!!!");
+//        }
+//
+//        Car carFromDb = optionalCar.get();
+//        CarByIdDto carByIdDto = CarByIdDto.builder()
+//                .id(carFromDb.getId())
+//                .model(carFromDb.getModel())
+//                .brandId(carFromDb.getBrand().getId())
+//                .brandName(carFromDb.getBrand().getName())
+//                .build();
+//
+//        return carByIdDto;
+//    }
+
+    public CarByIdProjection getCarById(Integer id) {
+        Optional<CarByIdProjection> optionalCar = carRepo.getCarById(id);
+        if (optionalCar.isEmpty()) {
+            throw new IllegalStateException("Car not found!!!");
+        }
+        return optionalCar.get();
     }
 
 

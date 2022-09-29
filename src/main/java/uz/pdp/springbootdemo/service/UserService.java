@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.pdp.springbootdemo.dto.UserDto;
 import uz.pdp.springbootdemo.entity.Brand;
+import uz.pdp.springbootdemo.entity.Passport;
 import uz.pdp.springbootdemo.entity.User;
 import uz.pdp.springbootdemo.repository.BrandRepo;
 import uz.pdp.springbootdemo.repository.UserRepo;
@@ -31,6 +32,24 @@ public class UserService {
         long totalElements = usersPage.getTotalElements();
         List<User> userList = usersPage.getContent();
         return userList;
+    }
+
+    public User getUserById(Integer id){
+
+
+        Optional<User> optionalUser = userRepo.findById(id);
+        // TODO: 29/09/22
+        User user = optionalUser.get();
+        //.....
+        //.....
+        //.....
+        //.....
+        Passport passport = user.getPassport();
+
+
+        return user;
+
+
     }
 
 
