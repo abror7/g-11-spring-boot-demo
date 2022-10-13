@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.springbootdemo.dto.UserDto;
 import uz.pdp.springbootdemo.entity.Brand;
@@ -18,10 +22,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepo userRepo;
     private final BrandRepo brandRepo;
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> getAllUsersFromDb(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
@@ -34,7 +39,7 @@ public class UserService {
         return userList;
     }
 
-    public User getUserById(Integer id){
+    public User getUserById(Integer id) {
 
 
         Optional<User> optionalUser = userRepo.findById(id);
@@ -55,7 +60,14 @@ public class UserService {
 
     public void saveUser(UserDto userDto) {
 
-        User user = new ObjectMapper().convertValue(userDto, User.class);
+//        User user = new ObjectMapper().convertValue(userDto, User.class);
+
+        User user = User.builder()
+                .username(userDto.getUsername())
+                .fullName(userDto.getFullName())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .build();
+
         userRepo.save(user);
     }
 
@@ -64,4 +76,12 @@ public class UserService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> optionalUser = userRepo.findByUsername(username);
+        if (optionalUser.isEmpty())
+            throw new UsernameNotFoundException("User with username: " + username + " is not found!!!");
+        return optionalUser.get();
+
+    }
 }

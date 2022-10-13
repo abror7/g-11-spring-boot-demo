@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.springbootdemo.dto.UserDto;
 import uz.pdp.springbootdemo.entity.User;
+import uz.pdp.springbootdemo.payload.ApiResponse;
 import uz.pdp.springbootdemo.service.UserService;
 
 import javax.validation.Valid;
@@ -31,30 +32,31 @@ public class UserController {
 
     // @ModelAttribute
 
-    @GetMapping
-    public String getAllUsers(@RequestParam(name = "page", defaultValue = "1") int page,
-                             @RequestParam(name = "size", defaultValue = "5") int size,
-                             Model model
-    ) {
+//    @GetMapping
+//    public String getAllUsers(@RequestParam(name = "page", defaultValue = "1") int page,
+//                             @RequestParam(name = "size", defaultValue = "5") int size,
+//                             Model model
+//    ) {
+//
+//        List<User> allUsersFromDb = userservice.getAllUsersFromDb(page, size);
+//        model.addAttribute("users", allUsersFromDb);
+//        return "view-users";
+//    }
 
-        List<User> allUsersFromDb = userservice.getAllUsersFromDb(page, size);
-        model.addAttribute("users", allUsersFromDb);
-        return "view-users";
-    }
-
-    @GetMapping("/get-form")
-    public String getUserForm(@ModelAttribute(name = "userDto") UserDto userDto) {
-        return "register-form";
-    }
+//    @GetMapping("/get-form")
+//    public String getUserForm(@ModelAttribute(name = "userDto") UserDto userDto) {
+//        return "register-form";
+//    }
 
 
     @PostMapping
-    public String saveUser(@Valid UserDto userDto,  BindingResult bindingResult) {
+    public HttpEntity<?> saveUser(@Valid @RequestBody UserDto userDto,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "register-form";
+//            return "register-form";
+            throw new IllegalStateException("Bad request");
         }
         userservice.saveUser(userDto);
-        return "redirect:/users";
+        return ResponseEntity.ok(new ApiResponse(userDto.getFullName() + " is successfully registered!!!", true, null));
     }
 
 
