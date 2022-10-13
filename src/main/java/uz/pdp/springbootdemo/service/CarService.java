@@ -71,6 +71,7 @@ public class CarService {
             throw new IllegalStateException("Brand not found!!!");
         }
         carRepo.save(Car.builder()
+                .id(carDto.getId())
                 .model(carDto.getModel())
                 .brand(optionalBrand.get())
                 .description(carDto.getDescription())

@@ -1,10 +1,17 @@
 package uz.pdp.springbootdemo.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -33,6 +40,7 @@ public class    User implements UserDetails {
     @Column(unique = true)
     private String email;
 
+
     @OneToOne(mappedBy = "owner", fetch = FetchType.LAZY)
     @JsonIgnore
     private Passport passport;
@@ -40,7 +48,13 @@ public class    User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Address> addressList;
 
+
     private boolean isEnabled;
+
+//    @OneToOne
+//    private Address address;
+
+
 
 
     @Override
