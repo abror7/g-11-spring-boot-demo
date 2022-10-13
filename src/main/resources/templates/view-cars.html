@@ -15,6 +15,10 @@
     <a href="/cars/get-form" class="my-4 btn btn-primary">+ add new car</a>
     <div class="row">
         <div class="col-md-6 offset-3">
+
+            <div th:if="${username != null}">
+                <h1 th:text="${username}"></h1>
+            </div>
             <table class="table">
                 <thead>
                 <tr>

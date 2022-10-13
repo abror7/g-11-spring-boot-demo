@@ -3,12 +3,18 @@ package uz.pdp.springbootdemo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "users")
@@ -17,7 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class User {
+public class    User implements UserDetails {
     @Id // primary key bo'lishi uchun
     @GeneratedValue(strategy = GenerationType.IDENTITY) // sequence yaratib berishi uchun
     private Integer id;
@@ -42,8 +48,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Address> addressList;
 
+
+    private boolean isEnabled;
+
 //    @OneToOne
 //    private Address address;
+
 
 
 
@@ -57,4 +67,26 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+
 }

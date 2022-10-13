@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kirish sahifa</title>
+    <!--   STYLESHEETS  -->
+    <link rel="stylesheet" href="webjars/bootstrap/5.2.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div th:if="${param.error}" >
+            <h1>Error</h1>
+        </div>
+        <div class="col-md-6 offset-3">
+            <h1>Kirish</h1>
+            <form action="/login" method="post">
+                <input name="username" type="text">
+                <input name="password" type="password">
+                <button>Kirish</button>
+
+            </form>
+            <a class="btn btn-outline-primary" href="/login">Yana kirishga urinib ko'rish</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

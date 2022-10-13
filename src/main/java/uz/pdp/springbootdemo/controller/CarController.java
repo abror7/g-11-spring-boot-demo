@@ -3,6 +3,8 @@ package uz.pdp.springbootdemo.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,20 +40,24 @@ public class CarController {
                              @RequestParam(name = "size", defaultValue = "5") int size,
                              @RequestParam(name = "search", required = false) String search,
                              Model model
+
     ) {
 
         List<Car> allCarsFromDb = carService.getAllCarsFromDb(page, size, search);
         model.addAttribute("cars", allCarsFromDb);
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getName();
+        model.addAttribute("username", username);
         return "view-cars";
     }
 
 
     @GetMapping("/{id}")
-    public HttpEntity<?> getCarById(@PathVariable Integer id){
+    public HttpEntity<?> getCarById(@PathVariable Integer id) {
         CarByIdProjection carById = carService.getCarById(id);
         return ResponseEntity.ok(carById);
     }
 
+    @PreAuthorize("hasAnyAuthority('CAR_QUSHA_OLADI', 'ROLE_ADMIN')")
     @GetMapping("/get-form")
     public String getCarForm(Model model,
                              @RequestParam(required = false) Integer id) {
@@ -76,6 +82,7 @@ public class CarController {
     }
 
 
+        @PreAuthorize("hasAnyAuthority('CAR_QUSHA_OLADI', 'ROLE_OTHER')")
     @PostMapping
     public String saveCar(@Valid CarDto carDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

@@ -3,6 +3,7 @@ package uz.pdp.springbootdemo.util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.pdp.springbootdemo.entity.*;
 import uz.pdp.springbootdemo.repository.*;
@@ -25,6 +26,8 @@ public class DataLoader implements CommandLineRunner {
     private final PassportRepo passportRepo;
     private final ContinentRepo continentRepo;
     private final CountryRepo countryRepo;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -72,9 +75,19 @@ public class DataLoader implements CommandLineRunner {
             User oybek = userRepo.save(User.builder()
                     .username("oybek123")
                     .email("oybek@mail.com")
-                    .password("123")
+                    .password(passwordEncoder.encode("123"))
                     .fullName("Oybek Akhmadjonov")
                     .addressList(Collections.singletonList(address))
+                    .isEnabled(true)
+                    .build());
+
+
+            User ahad = userRepo.save(User.builder()
+                    .username("ahad")
+                    .email("ahad@mail.com")
+                    .password(passwordEncoder.encode("123"))
+                    .fullName("Ahad Ahmadov")
+                    .isEnabled(true)
                     .build());
 
             Continent europe = Continent
@@ -103,7 +116,6 @@ public class DataLoader implements CommandLineRunner {
             europe.setCountryList(countryList);
 
             continentRepo.save(europe);
-
 
 
 //            passportRepo.save(Passport
