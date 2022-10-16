@@ -6,7 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import uz.pdp.springbootdemo.entity.*;
-import uz.pdp.springbootdemo.entity.enums.RoleEnum;
 import uz.pdp.springbootdemo.repository.*;
 
 import java.util.ArrayList;
@@ -20,8 +19,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Value("${spring.sql.init.mode}")
     private String initMode;
-
-    private final RoleRepository roleRepo;
 
     private final CarRepo carRepo;
     private final BrandRepo brandRepo;
@@ -37,26 +34,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         if (initMode.equals("always")) {
-            // ROLE LAR DB GA SAQLANADI...
-            roleRepo.save(Role.builder()
-                    .name(RoleEnum.ROLE_SUPER_ADMIN)
-                    .build());
-            roleRepo.save(Role.builder()
-                    .name(RoleEnum.ROLE_ADMIN)
-                    .build());
-            roleRepo.save(Role.builder()
-                    .name(RoleEnum.ROLE_USER)
-                    .build());
 
-            userRepo.save(User.builder()
-                            .username("afzal")
-                            .password(passwordEncoder.encode("123"))
-                            .fullName("Afzal Abrorjonov")
-                            .email("afzal@mail.com")
-                            .isEnabled(true)
-//                            .roles()
-                    .build());
-//            ==============================
             Brand savedBrand = brandRepo.save(Brand.builder()
                     .name("Chevrolet")
                     .description("This is chevrolet brand...")
