@@ -33,7 +33,7 @@
                     <td th:text="${car.brand.name}"></td>
                     <td>
                         <a
-                                th:href="@{'/cars/get-form/'+${car.id}}"
+                                th:href="@{'/cars/get-form?id='+${car.id}}"
                                 th:text="EDIT"
                                 class="btn btn-warning"></a>
                         <a

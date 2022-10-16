@@ -31,12 +31,17 @@
                 <div class="mb-3">
                     <label for="userPassword" class="form-label">Password:</label>
                     <input name="password" type="password" class="form-control" id="userPassword">
-                    <p th:if="${#fields.hasErrors()}" th:errors="*{password}"></p>
+                    <p class="text-danger" th:if="${#fields.hasErrors()}" th:errors="*{password}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="userConfirmPassword" class="form-label">Confirm Password:</label>
                     <input name="confirmPassword" type="password" class="form-control" id="userConfirmPassword">
-                    <p th:if="${#fields.hasErrors()}" th:errors="*{confirmPassword}"></p>
+                    <p class="text-danger" th:if="${#fields.hasErrors()}" th:errors="*{confirmPassword}"></p>
+                </div>
+                <div class="mb-3">
+                    <label for="userBirthDate" class="form-label">Birth date:</label>
+                    <input name="birthDate" type="date" class="form-control" id="userBirthDate">
+                    <p class="text-danger" th:if="${#fields.hasErrors()}" th:errors="*{birthDate}"></p>
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>

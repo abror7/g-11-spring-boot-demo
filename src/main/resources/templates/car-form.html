@@ -4,7 +4,8 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>Car form</title>
+    <title >
+    </title>
     <!--   STYLESHEETS  -->
     <link rel="stylesheet" href="/webjars/bootstrap/5.2.0/css/bootstrap.min.css">
 </head>
@@ -15,19 +16,22 @@
     <div class="row">
         <div class="col-md-6 offset-3">
             <form action="/cars" method="post" th:object="${carDto}">
+
+                <input type="hidden" th:field="*{id}">
                 <div class="mb-3">
                     <label for="carModel" class="form-label">Car model:</label>
-                    <input name="model" type="text" class="form-control" id="carModel">
+                    <input th:field="*{model}" type="text" class="form-control" id="carModel">
                     <p class="text-danger" th:if="${#fields.hasErrors()}" th:errors="*{model}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="carDescription" class="form-label">Description:</label>
-                    <input name="description" type="text" class="form-control" id="carDescription">
+                    <input th:field="*{description}" type="text" class="form-control" id="carDescription">
                     <p th:if="${#fields.hasErrors()}" th:errors="*{description}"></p>
 
                 </div>
 
                 <div class="mb-3">
+<!--                   todo: replace with brandList from model attr... -->
                     <select name="brandId" class="form-select">
                         <option selected disabled value="0">Select brand: </option>
                         <option value="1">Chevrolet</option>
