@@ -3,12 +3,14 @@ package uz.pdp.springbootdemo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import uz.pdp.springbootdemo.entity.enums.PermissionEnum;
+import uz.pdp.springbootdemo.entity.enums.RoleEnum;
 
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity(name = "users")
 @AllArgsConstructor
@@ -16,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class    User implements UserDetails {
+public class User implements UserDetails {
     @Id // primary key bo'lishi uchun
     @GeneratedValue(strategy = GenerationType.IDENTITY) // sequence yaratib berishi uchun
     private Integer id;
@@ -42,6 +44,20 @@ public class    User implements UserDetails {
 
     private boolean isEnabled;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_permission",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private Set<Permission> permissions;
+
 
     @Override
     public String toString() {
@@ -56,7 +72,16 @@ public class    User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<SimpleGrantedAuthority> authorityList = new HashSet<>();
+
+        for (Role role : roles) {
+            authorityList.add(new SimpleGrantedAuthority(role.getName().toString()));
+        }
+        for (Permission permission : permissions) {
+            authorityList.add(new SimpleGrantedAuthority(permission.getName().toString()));
+        }
+        return authorityList;
+
     }
 
     @Override
