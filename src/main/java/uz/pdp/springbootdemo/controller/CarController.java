@@ -82,7 +82,7 @@ public class CarController {
     }
 
 
-        @PreAuthorize("hasAnyAuthority('CAR_QUSHA_OLADI', 'ROLE_OTHER')")
+    @PreAuthorize("hasAnyAuthority('CAR_QUSHA_OLADI', 'ROLE_OTHER')")
     @PostMapping
     public String saveCar(@Valid CarDto carDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -93,6 +93,7 @@ public class CarController {
     }
 
 
+    @PreAuthorize("hasPermission('CAN_DELETE_CAR')")
     @GetMapping("/delete/{id}")
     public String deleteCar(@PathVariable int id) {
         carService.deleteCarById(id);

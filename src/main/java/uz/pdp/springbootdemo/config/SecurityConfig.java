@@ -16,7 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uz.pdp.springbootdemo.filter.CustomAuthenticationFilter;
+import uz.pdp.springbootdemo.filter.CustomAuthorizationFilter;
 import uz.pdp.springbootdemo.service.UserService;
 
 @Configuration
@@ -83,7 +85,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //               .httpBasic();
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(customAuthenticationFilter);
+                .addFilter(customAuthenticationFilter)
+                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        ;
 
 
     }
