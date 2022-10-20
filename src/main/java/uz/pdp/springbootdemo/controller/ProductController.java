@@ -4,6 +4,7 @@ package uz.pdp.springbootdemo.controller;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,10 @@ public class ProductController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        String currentUser = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("Current user: " + currentUser);
+    public ResponseEntity<?> getAllProducts(@AuthenticationPrincipal User currentUser) {
+//        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println("Current user: " + currentUser);
+        System.out.println(currentUser);
         return ResponseEntity.ok(productRepo.getAllProducts());
     }
 

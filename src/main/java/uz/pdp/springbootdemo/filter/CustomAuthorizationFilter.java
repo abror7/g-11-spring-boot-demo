@@ -8,19 +8,14 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uz.pdp.springbootdemo.entity.User;
+import uz.pdp.springbootdemo.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -33,6 +28,13 @@ import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    private final UserService userService;
+
+    public CustomAuthorizationFilter(UserService userService) {
+        this.userService = userService;
+    }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -60,28 +62,27 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                     stream(roleNames).forEach(roleName -> authorities.add(new SimpleGrantedAuthority(roleName)));
 
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    Authentication authentication =
+                            UsernamePasswordAuthenticationToken.authenticated(userService.loadUserByUsername(username),
+                                    null,
+                                    authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
                     filterChain.doFilter(request, response);
 
-                }
-                catch (TokenExpiredException e){
+                } catch (TokenExpiredException e) {
                     messages.put("errorMessages", "Token muddati tugagan!!!");
                     e.printStackTrace();
-                }
-                catch (SignatureVerificationException e){
+                } catch (SignatureVerificationException e) {
                     messages.put("errorMessages", "Token buzilgan!!!");
                     e.printStackTrace();
-                }
-                catch (JWTDecodeException e) {
+                } catch (JWTDecodeException e) {
                     messages.put("errorMessages", "Token buzilgan!!!");
                     e.printStackTrace();
-                }catch (Exception e){
+                } catch (Exception e) {
                     messages.put("errorMessages", "Something is wrong with jwt token!!!");
                     e.printStackTrace();
-                }
-                finally {
+                } finally {
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     response.setStatus(HttpStatus.FORBIDDEN.value());
                     new ObjectMapper().writeValue(response.getOutputStream(), messages);
