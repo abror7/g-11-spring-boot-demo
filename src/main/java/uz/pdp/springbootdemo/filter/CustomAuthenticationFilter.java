@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uz.pdp.springbootdemo.entity.User;
 import uz.pdp.springbootdemo.exception.BadRequestException;
+import uz.pdp.springbootdemo.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
